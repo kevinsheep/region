@@ -1,0 +1,42 @@
+e<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./jquery-3.3.1.min.js"></script>
+</head>
+<body>
+  <div id="area"></div>
+
+<script>
+$.ajax({
+  type : "GET",
+  url : "./pcas.json",
+  success (data) {
+    function render(node) {
+      let h = '<dl>';
+      for (let key in node) {
+        const item = node[key];
+        h += `<dt>${key}</dt>`;
+        if (Array.isArray(item)) {
+          h += `<dd>${item.toString()}</dd>`;
+        }
+        else if (typeof (item) === 'object') {
+          h += `<dd>${render(item)}</dd>`;
+        }
+        else {
+          h += `<dd>${item}</dd>`;
+        }
+      }
+      h += `</dd>`;
+      console.log(h);
+      return h;
+    }
+    $("#area").html(render(data));
+  }
+});
+</script>
+</body>
+</html>
